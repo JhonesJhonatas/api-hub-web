@@ -1,21 +1,3 @@
-<script setup lang="ts">
-import { onMounted } from 'vue'
-import { format } from 'date-fns'
-
-import ButtonComponent from '@/components/atoms/button-component.vue'
-
-import { useSession } from '@/modules/session/composables/use-session'
-
-const {
-  properties,
-  handlers: { handleListSessions },
-} = useSession()
-
-onMounted(async () => {
-  await handleListSessions()
-})
-</script>
-
 <template>
   <table>
     <thead>
@@ -32,9 +14,12 @@ onMounted(async () => {
     <tbody v-if="properties.loading">
       <tr>
         <td colspan="5" class="text-center">Loading...</td>
-        <td colspan="5" class="text-center">Loading...</td>
-        <td colspan="5" class="text-center">Loading...</td>
-        <td colspan="5" class="text-center">Loading...</td>
+      </tr>
+    </tbody>
+
+    <tbody v-if="!properties.loading && properties.sessions.length === 0">
+      <tr>
+        <td colspan="5" class="text-center">No sessions found</td>
       </tr>
     </tbody>
 
@@ -46,17 +31,45 @@ onMounted(async () => {
         <td>{{ format(session.createdAt, 'dd/MM/yyyy HH:mm') }}</td>
         <td>{{ format(session.updatedAt, 'dd/MM/yyyy HH:mm') }}</td>
         <td class="flex items-center gap-2">
-          <ButtonComponent>View</ButtonComponent>
+          <ButtonComponent
+            :disabled="
+              session.status === SessionStatus.QR_REQUIRED ||
+              session.status === SessionStatus.DISCONNECTED
+            "
+          >
+            View
+          </ButtonComponent>
+          <ButtonComponent
+            :disabled="
+              session.status === SessionStatus.CONNECTED ||
+              session.status === SessionStatus.CONNECTING
+            "
+          >
+            Qr Code</ButtonComponent
+          >
           <ButtonComponent>Edit</ButtonComponent>
           <ButtonComponent>Delete</ButtonComponent>
         </td>
       </tr>
     </tbody>
-
-    <tbody v-if="!properties.loading && properties.sessions.length === 0">
-      <tr>
-        <td colspan="5" class="text-center">No sessions found</td>
-      </tr>
-    </tbody>
   </table>
 </template>
+
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { format } from 'date-fns'
+
+import ButtonComponent from '@/components/atoms/button-component.vue'
+
+import { useSession } from '@/modules/session/composables/use-session'
+import { SessionStatus } from '@/modules/session/types/session-status'
+
+const {
+  properties,
+  handlers: { handleListSessions },
+} = useSession()
+
+onMounted(async () => {
+  await handleListSessions()
+})
+</script>
