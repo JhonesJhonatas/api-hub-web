@@ -1,15 +1,3 @@
-<script setup lang="ts">
-import { useRouter } from 'vue-router'
-
-import ButtonComponent from '@/components/atoms/button-component.vue'
-
-const router = useRouter()
-
-const handleLogout = () => {
-  router.push('/')
-}
-</script>
-
 <template>
   <div class="w-10/12 bg-zinc-800 mx-auto p-4 rounded mt-4 flex items-center justify-between">
     <div class="flex flex-col">
@@ -23,3 +11,15 @@ const handleLogout = () => {
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+
+import ButtonComponent from '@/components/button-component.vue'
+
+const router = useRouter()
+
+const handleLogout = () => {
+  router.push('/')
+}
+</script>

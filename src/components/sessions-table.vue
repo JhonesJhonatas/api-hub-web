@@ -37,18 +37,23 @@
               session.status === SessionStatus.DISCONNECTED
             "
           >
-            View
+            <ChatBubbleLeftRightIcon class="w-4 h-4" />
           </ButtonComponent>
           <ButtonComponent
             :disabled="
               session.status === SessionStatus.CONNECTED ||
               session.status === SessionStatus.CONNECTING
             "
+            @click="handleGetQrCode({ sessionId: session.id })"
           >
-            Qr Code</ButtonComponent
-          >
-          <ButtonComponent>Edit</ButtonComponent>
-          <ButtonComponent>Delete</ButtonComponent>
+            <QrCodeIcon class="w-4 h-4" />
+          </ButtonComponent>
+          <ButtonComponent typeColor="warning">
+            <PencilIcon class="w-4 h-4" />
+          </ButtonComponent>
+          <ButtonComponent typeColor="error">
+            <TrashIcon class="w-4 h-4" />
+          </ButtonComponent>
         </td>
       </tr>
     </tbody>
@@ -59,14 +64,21 @@
 import { onMounted } from 'vue'
 import { format } from 'date-fns'
 
-import ButtonComponent from '@/components/atoms/button-component.vue'
+import ButtonComponent from '@/components/button-component.vue'
 
 import { useSession } from '@/modules/session/composables/use-session'
 import { SessionStatus } from '@/modules/session/types/session-status'
 
+import {
+  QrCodeIcon,
+  PencilIcon,
+  TrashIcon,
+  ChatBubbleLeftRightIcon,
+} from '@heroicons/vue/24/outline'
+
 const {
   properties,
-  handlers: { handleListSessions },
+  handlers: { handleListSessions, handleGetQrCode },
 } = useSession()
 
 onMounted(async () => {
