@@ -10,7 +10,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col gap-1">
     <div class="flex items-center justify-between gap-2">
       <label :for="props.id">{{ props.label }}</label>
       <span class="text-red-500">{{ props.error }}</span>
@@ -21,7 +21,7 @@ const props = defineProps<{
       :placeholder="props.placeholder"
       class="bg-zinc-700 text-white px-4 py-2 rounded w-full"
       :value="props.modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
+      @input="$emit('update:modelValue', ($event.target as HTMLInputElement)?.value ?? '')"
     />
   </div>
 </template>

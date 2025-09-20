@@ -1,8 +1,17 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import SessionsTable from '@/components/sessions-table.vue'
+import ButtonComponent from '@/components/button-component.vue'
+</script>
 
 <template>
-  <h1>Dashboard</h1>
-  <p>Yes, it's working.</p>
+  <session class="flex flex-col gap-4 bg-zinc-800 rounded p-4">
+    <div class="flex items-center justify-between">
+      <span class="text-2xl font-bold">Sessions</span>
+      <ButtonComponent>Create Session</ButtonComponent>
+    </div>
+    <hr class="border-zinc-700" />
+    <SessionsTable />
+  </session>
 </template>
 
 <style scoped></style>

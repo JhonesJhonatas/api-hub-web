@@ -13,31 +13,31 @@ const formFields = reactive({
 })
 
 const errors = reactive({
-  user: null,
-  password: null,
+  user: undefined as string | undefined,
+  password: undefined as string | undefined,
 })
 
 const handleSubmit = () => {
   const { user, password } = formFields
 
-  if (user === '') {
+  if (!user || user === '') {
     errors.user = 'User is required'
   }
 
   if (user.length < 0) {
-    errors.user = null
+    errors.user = undefined
   }
 
-  if (password === '') {
+  if (!password || password === '') {
     errors.password = 'Password is required'
   }
 
   if (password.length < 0) {
-    errors.password = null
+    errors.password = undefined
   }
 
   if (user === 'admin' && password === 'admin') {
-    router.push('/dashboard')
+    router.push('/auth/dashboard')
   }
 }
 </script>
@@ -64,7 +64,7 @@ const handleSubmit = () => {
           :error="errors.password"
           placeholder="Enter your password"
         />
-        <ButtonComponent>Sign In</ButtonComponent>
+        <ButtonComponent block>Sign In</ButtonComponent>
 
         <p class="text-zinc-400 text-center">
           Don't have an account? <a href="/sign-up" class="text-blue-500">Sign Up</a>
