@@ -2,8 +2,8 @@
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
-import ButtonComponent from '@/components/button-component.vue'
-import InputComponent from '@/components/input-component.vue'
+import ButtonComponent from '@/components/atoms/button-component.vue'
+import InputComponent from '@/components/atoms/input-component.vue'
 
 const router = useRouter()
 

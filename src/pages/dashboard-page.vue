@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import SessionsTable from '@/components/sessions-table.vue'
-import ButtonComponent from '@/components/button-component.vue'
+import SessionsTable from '@/components/organisms/sessions-table.vue'
+import ButtonComponent from '@/components/atoms/button-component.vue'
 </script>
 
 <template>
