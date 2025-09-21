@@ -44,9 +44,17 @@
               session.status === SessionStatus.CONNECTED ||
               session.status === SessionStatus.CONNECTING
             "
-            @click="handleGetQrCode({ sessionId: session.id })"
+            @click="
+              () => {
+                handleGetQrCode({ sessionId: session.id })
+                qrCodeModalIsOpen = true
+              }
+            "
           >
             <QrCodeIcon class="w-4 h-4" />
+          </ButtonComponent>
+          <ButtonComponent typeColor="error">
+            <LinkSlashIcon class="w-4 h-4" />
           </ButtonComponent>
           <ButtonComponent typeColor="warning">
             <PencilIcon class="w-4 h-4" />
@@ -58,13 +66,27 @@
       </tr>
     </tbody>
   </table>
+
+  <BaseModalComponent
+    :isOpen="qrCodeModalIsOpen"
+    :onClose="() => (qrCodeModalIsOpen = false)"
+    title="QR Code"
+  >
+    <VueQrcode
+      :value="properties.qrCode"
+      :color="{ dark: '#000000ff', light: '#ffffffff' }"
+      type="image/png"
+    />
+  </BaseModalComponent>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { format } from 'date-fns'
+import VueQrcode from 'vue-qrcode'
 
 import ButtonComponent from '@/components/button-component.vue'
+import BaseModalComponent from '@/components/base-modal-component.vue'
 
 import { useSession } from '@/modules/session/composables/use-session'
 import { SessionStatus } from '@/modules/session/types/session-status'
@@ -74,7 +96,10 @@ import {
   PencilIcon,
   TrashIcon,
   ChatBubbleLeftRightIcon,
+  LinkSlashIcon,
 } from '@heroicons/vue/24/outline'
+
+const qrCodeModalIsOpen = ref(false)
 
 const {
   properties,
