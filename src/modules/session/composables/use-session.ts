@@ -1,8 +1,9 @@
 import { reactive } from 'vue'
 
-import { getQrCode, listSessions } from '@/api/services/session-services'
+import { disconnectSession, getQrCode, listSessions } from '@/api/services/session-services'
 import type { Session } from '@/modules/session/types/session'
 import type { GetQrCodeProps } from '@/modules/session/types/get-qr-code'
+import type { DisconnectSessionProps } from '../types/disconnect-session'
 
 export function useSession() {
   const properties = reactive({
@@ -43,11 +44,24 @@ export function useSession() {
     }
   }
 
+  const handleDisconnectSession = async (props: DisconnectSessionProps) => {
+    properties.loading = true
+
+    try {
+      await disconnectSession(props)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      properties.loading = false
+    }
+  }
+
   return {
     properties,
     handlers: {
       handleListSessions,
       handleGetQrCode,
+      handleDisconnectSession,
     },
   }
 }

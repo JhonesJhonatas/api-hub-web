@@ -26,10 +26,10 @@
     <tbody v-if="!properties.loading && properties.sessions.length > 0">
       <tr v-for="session in properties.sessions" :key="session.id">
         <td colspan="2">{{ session.id }}</td>
-        <td>{{ session.status }}</td>
+        <td>{{ formatSessionStatus(session.status) }}</td>
         <td>{{ session.engine }}</td>
-        <td>{{ format(session.createdAt, 'dd/MM/yyyy HH:mm') }}</td>
-        <td>{{ format(session.updatedAt, 'dd/MM/yyyy HH:mm') }}</td>
+        <td>{{ formatDate(session.createdAt) }}</td>
+        <td>{{ formatDate(session.updatedAt) }}</td>
         <td class="flex items-center gap-2">
           <ButtonComponent
             :disabled="
@@ -53,7 +53,10 @@
           >
             <QrCodeIcon class="w-4 h-4" />
           </ButtonComponent>
-          <ButtonComponent typeColor="error">
+          <ButtonComponent
+            typeColor="error"
+            @click="handleDisconnectSession({ sessionId: session.id })"
+          >
             <LinkSlashIcon class="w-4 h-4" />
           </ButtonComponent>
           <ButtonComponent typeColor="warning">
@@ -82,8 +85,10 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { format } from 'date-fns'
 import VueQrcode from 'vue-qrcode'
+
+import { formatSessionStatus } from '@/utils/format-session-status'
+import { formatDate } from '@/utils/format-date'
 
 import ButtonComponent from '@/components/button-component.vue'
 import BaseModalComponent from '@/components/base-modal-component.vue'
@@ -103,7 +108,7 @@ const qrCodeModalIsOpen = ref(false)
 
 const {
   properties,
-  handlers: { handleListSessions, handleGetQrCode },
+  handlers: { handleListSessions, handleGetQrCode, handleDisconnectSession },
 } = useSession()
 
 onMounted(async () => {
